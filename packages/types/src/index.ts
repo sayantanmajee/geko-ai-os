@@ -26,11 +26,12 @@ export type User = z.infer<typeof UserSchema>;
 // --- WORKSPACE ---
 export const WorkspaceSchema = z.object({
   id: z.string().uuid(),
+  ownerId: z.string().uuid(),
   name: z.string().min(1),
   type: WorkspaceTypeEnum,
-  ownerId: z.string().uuid(),
+  role: WorkspaceRoleEnum.optional(), // The role of the current user in this workspace
   plan: PlanTypeEnum,
-  creditBalance: z.number().default(0), // For Billing
+  creditBalance: z.number().optional(), // Only visible to Admins/Owners
   createdAt: z.date(),
 });
 
@@ -59,6 +60,26 @@ export const RegisterRequestSchema = LoginRequestSchema.extend({
 
 export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
 
+/**
+ * Request to create a new workspace
+ */
+export const CreateWorkspaceSchema = z.object({
+  name: z.string().min(3, "Workspace name must be at least 3 chars"),
+  type: WorkspaceTypeEnum.default("TEAM")
+});
+
+export type CreateWorkspaceRequest = z.infer<typeof CreateWorkspaceSchema>;
+
+/**
+ * Request to add a member (Invite)
+ */
+export const AddMemberSchema = z.object({
+  email: z.string().email(),
+  role: WorkspaceRoleEnum
+});
+
+export type AddMemberRequest = z.infer<typeof AddMemberSchema>;
+
 // --- API RESPONSES ---
 /**
  * 5. Generic API Response Wrapper
@@ -71,3 +92,5 @@ export const ApiResponseSchema = <T extends z.ZodTypeAny>(dataSchema: T) =>
     data: dataSchema.optional(),
     error: z.string().optional(),
   });
+
+const value = { "level": 30, "time": 1768234048114, "service": "geko-gateway", "req": { "id": 1, "method": "POST", "url": "/auth/register", "query": {}, "params": {}, "headers": { "content-type": "application/json", "user-agent": "PostmanRuntime/7.51.0", "accept": "*/*", "postman-token": "02b562af-4188-4651-a17f-b5ad856e51ff", "host": "localhost:3002", "accept-encoding": "gzip, deflate, br", "connection": "keep-alive", "content-length": "110" }, "remoteAddress": "::1", "remotePort": 58878 }, "res": { "statusCode": 400, "headers": { "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", "cross-origin-opener-policy": "same-origin", "cross-origin-resource-policy": "same-origin", "origin-agent-cluster": "?1", "referrer-policy": "no-referrer", "strict-transport-security": "max-age=31536000; includeSubDomains", "x-content-type-options": "nosniff", "x-dns-prefetch-control": "off", "x-download-options": "noopen", "x-frame-options": "SAMEORIGIN", "x-permitted-cross-domain-policies": "none", "x-xss-protection": "0", "access-control-allow-origin": "*", "content-type": "application/json; charset=utf-8", "content-length": "272", "etag": "W/\"110-tZDYCc2PDC/6dHC+D9ETyCiAX5A\"" } }, "responseTime": 56, "msg": "request completed" }

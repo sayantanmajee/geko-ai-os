@@ -5,6 +5,9 @@ import helmet from "helmet";
 import pinoHttp from "pino-http"; // ✅ Replaces Morgan
 import dotenv from "dotenv";
 
+import { WorkspaceController } from "./modules/workspace/workspace.controller";
+import { rbacMiddleware } from "./shared/middleware/rbac";
+
 import { AuthController } from "./modules/auth/auth.controller";
 import { httpClient } from "./shared/http";
 import { logger } from "./shared/logger";
@@ -23,11 +26,21 @@ app.use(express.json());
 // Automatically logs every request: method, url, status, time
 app.use(pinoHttp({ logger }));
 
-// --- 3. Routes: Auth ---
+// --- 3. Routes: Auth & Workspace ---
 const authRouter = express.Router();
+const workspaceRouter = express.Router();
+
 authRouter.post("/register", AuthController.register);
 // authRouter.post("/google", AuthController.googleLogin); // 🔮 Future
 app.use("/auth", authRouter);
+
+// Apply RBAC to all workspace routes
+workspaceRouter.use(rbacMiddleware);
+
+workspaceRouter.post("/", WorkspaceController.create);
+workspaceRouter.get("/", WorkspaceController.list);
+
+app.use("/workspaces", workspaceRouter);
 
 // --- 4. Health Check (Axios Test) ---
 app.get("/health", async (req: Request, res: Response) => {

@@ -13,7 +13,7 @@ const isDev = process.env.NODE_ENV === "development";
  * 3. Thread-Safe: Works well in Node's async environment.
  */
 export const logger = pino({
-  level: process.env.LOG_LEVEL || "info",
+  level: process.env.LOG_LEVEL || "debug",
   transport: isDev
     ? {
         target: "pino-pretty", // 🎨 Pretty colors for local dev

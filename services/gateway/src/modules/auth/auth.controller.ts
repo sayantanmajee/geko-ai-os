@@ -33,7 +33,7 @@ export class AuthController {
 
       res.status(status).json({ 
         success: false, 
-        error: message
+        error: error
       });
     }
   }
