@@ -1,0 +1,18 @@
+{
+  "name": "@geko/types",
+  "version": "0.0.1",
+  "private": true,
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint .",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^3.22.4" 
+  },
+  "devDependencies": {
+    "@geko/config": "workspace:*"
+  }
+}

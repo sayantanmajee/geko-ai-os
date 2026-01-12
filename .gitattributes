@@ -1,0 +1,28 @@
+# Default to auto-normalizing line endings
+* text=auto
+
+# Force shell scripts to always use LF (Unix style), even on Windows
+# This is crucial for Docker entrypoint scripts
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Keep binary files as is
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.flv binary
+*.fla binary
+*.swf binary
+*.gz binary
+*.zip binary
+*.7z binary
+*.ttf binary
+*.eot binary
+*.woff binary
+*.pyc binary
+*.pdf binary

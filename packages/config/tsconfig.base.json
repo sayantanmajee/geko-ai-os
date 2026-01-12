@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "moduleResolution": "bundler",
+    "strict": true,                // 🛡️ Safety: No "any" allowed implicitly
+    "skipLibCheck": true,          // ⚡ Speed: Don't check node_modules types
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,  // 🛡️ Modern: Explicit imports/exports
+    "noEmit": true                 // We use Turbo/Vite to build, not tsc
+  }
+}
